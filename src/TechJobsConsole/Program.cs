@@ -27,7 +27,6 @@ namespace TechJobsConsole
             // Allow user to search/list until they manually quit with ctrl+c
             while (true)
             {
-
                 string actionChoice = GetUserSelection("View Jobs", actionChoices);
 
                 if (actionChoice.Equals("list"))
@@ -63,7 +62,8 @@ namespace TechJobsConsole
                     // Fetch results
                     if (columnChoice.Equals("all"))
                     {
-                        Console.WriteLine("Search all fields not yet implemented.");
+                        searchResults = JobData.FindByValue(searchTerm);
+                        PrintJobs(searchResults);
                     }
                     else
                     {
@@ -77,7 +77,7 @@ namespace TechJobsConsole
         /*
          * Returns the key of the selected item from the choices Dictionary
          */
-        private static string GetUserSelection(string choiceHeader, Dictionary<string, string> choices)
+        static string GetUserSelection(string choiceHeader, Dictionary<string, string> choices)
         {
             int choiceIdx;
             bool isValidChoice = false;
@@ -100,6 +100,7 @@ namespace TechJobsConsole
                 }
 
                 string input = Console.ReadLine();
+
                 choiceIdx = int.Parse(input);
 
                 if (choiceIdx < 0 || choiceIdx >= choiceKeys.Length)
@@ -116,9 +117,18 @@ namespace TechJobsConsole
             return choiceKeys[choiceIdx];
         }
 
-        private static void PrintJobs(List<Dictionary<string, string>> someJobs)
+        static void PrintJobs(List<Dictionary<string, string>> someJobs)
         {
-            Console.WriteLine("printJobs is not implemented yet");
+            foreach (Dictionary<string, string> item in someJobs)
+            {
+                Console.WriteLine();
+                Console.WriteLine("*****");
+                foreach (KeyValuePair<string, string> pair in item)
+                {
+                    Console.WriteLine(string.Format("{0}: {1}", pair.Key, pair.Value));
+                }
+                Console.WriteLine("*****");
+            }
         }
     }
 }

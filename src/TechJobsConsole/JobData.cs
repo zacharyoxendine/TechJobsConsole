@@ -49,9 +49,31 @@ namespace TechJobsConsole
             {
                 string aValue = row[column];
 
-                if (aValue.Contains(value))
+                if (aValue.ToLower().Contains(value.ToLower()))
                 {
                     jobs.Add(row);
+                }
+            }
+
+            return jobs;
+        }
+
+        public static List<Dictionary<string, string>> FindByValue(string value)
+        {
+            // load data, if not already loaded
+            LoadData();
+
+            List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
+
+            foreach (Dictionary<string, string> row in AllJobs)
+            {
+                foreach (string aValue in row.Values)
+                {
+                    if (aValue.ToLower().Contains(value.ToLower()))
+                    {
+                        jobs.Add(row);
+                        break;
+                    }
                 }
             }
 
@@ -61,7 +83,7 @@ namespace TechJobsConsole
         /*
          * Load and parse data from job_data.csv
          */
-        private static void LoadData()
+        static void LoadData()
         {
 
             if (IsDataLoaded)
@@ -105,7 +127,7 @@ namespace TechJobsConsole
         /*
          * Parse a single line of a CSV file into a string array
          */
-        private static string[] CSVRowToStringArray(string row, char fieldSeparator = ',', char stringSeparator = '\"')
+        static string[] CSVRowToStringArray(string row, char fieldSeparator = ',', char stringSeparator = '\"')
         {
             bool isBetweenQuotes = false;
             StringBuilder valueBuilder = new StringBuilder();
